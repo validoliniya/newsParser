@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="news-header"><h1>Лента новостей RBK</h1></div>
+    <div class="main-block">
+        {% for article in articles %}
+            <div class="row">
+                <div class="left">{{ article.header|length > 200 ? article.header|slice(0,200) ~ '...' : article.header }}</div>
+                <br>
+
+                <div class="right">
+                    <button class="btn_more" data-action="show" data-article-id="{{ article.id }}"
+                            data-url="{{ url('rbk.news.getArticleContent', { 'id': article.id }) }}">Подробнее
+                    </button>
+                </div>
+            </div>
+            <div id="{{ article.id }}"></div>
+            <br>
+            <br>
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        window.addEventListener('load', () => {
+            let loadMore = function(url, id) {
+                fetch(url)
+                    .then(response => response.json())
+                    .then(res => {
+                        let contentBlock = document.createElement('div');
+                        if (undefined !== res.img) {
+                            let sources        = res.img;
+                            let imgBlock       = document.createElement('div');
+                            imgBlock.className = 'img-block';
+                            sources.forEach((source) => {
+                                let img = document.createElement('img');
+                                img.setAttribute('src', source);
+                                img.className = 'article-img';
+                                imgBlock.appendChild(img);
+                            });
+                            contentBlock.appendChild(imgBlock);
+                        }
+
+                        if (undefined !== res.text) {
+                            let span       = document.createElement('span');
+                            span.innerHTML = res.text;
+                            contentBlock.appendChild(span);
+                        }
+
+                        document.getElementById(id).appendChild(contentBlock);
+                    });
+            };
+            document.querySelectorAll('.btn_more').forEach(function(btn) {
+                btn.addEventListener('click', function(evt) {
+                    evt.preventDefault();
+                    if (btn.dataset.action === 'show') {
+                        btn.dataset.action = 'hide';
+                        btn.innerHTML      = 'Скрыть';
+                        if (btn.dataset.load === undefined) {
+                            loadMore(btn.dataset.url, btn.dataset.articleId);
+                            btn.dataset.load = 'loaded';
+                        } else {
+                            document.getElementById(btn.dataset.articleId).classList.remove('hide');
+                        }
+                    } else {
+                        btn.dataset.action = 'show';
+                        btn.innerHTML      = 'Подробнее';
+                        document.getElementById(btn.dataset.articleId).classList.add('hide');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
