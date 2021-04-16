@@ -35,12 +35,18 @@ class ArticleModel
             $article = (new Article())
                 ->setResource($resource)
                 ->setHeader($header);
+            if (isset($content['date'])) {
+                $article->setDate($content['date']);
+            }
+
             $this->entityManager->persist($article);
             $this->entityManager->flush();
             $articleContent = (new ArticleContent())
                 ->setArticle($article)
-                ->setImgSources($content['img'])
                 ->setContent($content['text']);
+            if (isset($content['img'])) {
+                $articleContent->setImgSources($content['img']);
+            }
             $article->setContent($articleContent);
             $this->entityManager->persist($articleContent);
             $this->entityManager->flush();

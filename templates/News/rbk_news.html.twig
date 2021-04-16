@@ -6,7 +6,6 @@
             <div class="row">
                 <div class="left">{{ article.header|length > 200 ? article.header|slice(0,200) ~ '...' : article.header }}</div>
                 <br>
-
                 <div class="right">
                     <button class="btn_more" data-action="show" data-article-id="{{ article.id }}"
                             data-url="{{ url('rbk.news.getArticleContent', { 'id': article.id }) }}">Подробнее
@@ -49,6 +48,7 @@
                         document.getElementById(id).appendChild(contentBlock);
                     });
             };
+
             document.querySelectorAll('.btn_more').forEach(function(btn) {
                 btn.addEventListener('click', function(evt) {
                     evt.preventDefault();

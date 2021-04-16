@@ -33,6 +33,11 @@ class Article
      */
     private $content;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date;
+
 
     public function getId(): ?int
     {
@@ -76,6 +81,18 @@ class Article
         }
 
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTime $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

@@ -16,7 +16,10 @@ class RbkParser
         $news = [];
         foreach ($newsFeedList->children as $item) {
             if (isset($item->attr['href'])) {
-                $news[$item->plaintext] = self::parseNewsPage($item->attr['href']);
+                $header        = $item->plaintext;
+                $position      = strripos($header, ',');
+                $header        = substr($header, 0, $position);
+                $news[$header] = self::parseNewsPage($item->attr['href']);
             }
         }
 
@@ -28,18 +31,28 @@ class RbkParser
     {
         $pageElements = [];
         $text         = '';
-        $imgSources   = [];
         $document     = Parser::getHtmlDocument($url);
-        foreach ($document->find(' div [itemprop=articleBody] p') as $paragraph) {
-            $text .= $paragraph->plaintext . ' ';
+        $dateSpan     = $document->find(' span [class=article__header__date]', 0);
+        if ($dateSpan) {
+            $date = new \DateTime();
+            $date->setTimestamp(strtotime($dateSpan->attr['content']));
+            $pageElements['date'] = $date;
         }
 
-        foreach ($document->find(' div [itemprop=articleBody] img') as $img) {
-            $imgSources[] = $img->src;
+        $mainImage = $document->find(' div [class=article__main-image__wrap] img', 0);
+        if ($mainImage) {
+            $pageElements['img'] = [$mainImage->attr['src']];
+        }
+
+        foreach ($document->find(' div [itemprop=articleBody] p') as $paragraph) {
+            $text .= $paragraph->plaintext . PHP_EOL;
+        }
+
+        foreach ($document->find(' div [itemprop=articleBody] section') as $section) {
+            $text .= $section->plaintext . PHP_EOL;
         }
 
         $pageElements['text'] = $text;
-        $pageElements['img']  = $imgSources;
 
         return $pageElements;
     }
