@@ -10,4 +10,4 @@ php bin/console doctrine:fixtures:load --append
 
 yarn install
 
-yarn encore run dev
+yarn encore dev
