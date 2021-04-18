@@ -20,9 +20,8 @@ class RbkNewsController extends AbstractController
     {
         $resource = $newsResourceRepository->findOneByName(NewsResource::RBK);
         $news   = RbkParser::parseNewsBlock($resource->getUrl());
-        $articles = $articleModel->saveArticlesByResource($news,NewsResource::RBK);
-
-//        $articles = $articleRepository->findLastArticles(15);
+        $articleModel->saveArticlesByResource($news,NewsResource::RBK);
+        $articles = $articleRepository->findLastArticles(15);
 
         return $this->render('News/rbk_news.html.twig',
             [

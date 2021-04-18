@@ -4,7 +4,7 @@
     <div class="main-block">
         {% for article in articles %}
             <div class="row">
-                <div class="left">{{ article.header|length > 200 ? article.header|slice(0,200) ~ '...' : article.header }}</div>
+                <div class="left bold">{{ article.header|length > 200 ? article.header|slice(0,200) ~ '...' : article.header }}</div>
                 <br>
                 <div class="right">
                     <button class="btn_more" data-action="show" data-article-id="{{ article.id }}"
