@@ -19,8 +19,8 @@ class NewsResourceRepository extends ServiceEntityRepository
         parent::__construct($registry, NewsResource::class);
     }
 
-    public function findOneByName(string $name): ? NewsResource
+    public function findOneByName(string $name): ?NewsResource
     {
-        return $this->findOneBy(['name'=>$name]);
+        return $this->findOneBy(['name' => $name]);
     }
 }

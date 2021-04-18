@@ -19,8 +19,8 @@ class ArticleContentRepository extends ServiceEntityRepository
         parent::__construct($registry, ArticleContent::class);
     }
 
-    public function findOneByArticleId(int $id) :?ArticleContent
+    public function findOneByArticleId(int $id): ?ArticleContent
     {
-       return $this->findOneBy(['article' => $id]);
+        return $this->findOneBy(['article' => $id]);
     }
 }

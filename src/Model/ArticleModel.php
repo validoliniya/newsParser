@@ -28,7 +28,6 @@ class ArticleModel
 
     public function saveArticlesByResource(array $news, string $resourceName): void
     {
-        $articles = [];
         $resource = $this->newsResourceRepository->findOneByName($resourceName);
         foreach ($news as $header => $content) {
             $article = (new Article())

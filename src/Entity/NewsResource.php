@@ -21,19 +21,19 @@ class NewsResource
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $name = '';
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $url;
+    private $url = '';
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -45,7 +45,7 @@ class NewsResource
         return $this;
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): string
     {
         return $this->url;
     }
